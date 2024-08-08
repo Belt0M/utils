@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Translation STR Generator</title>
+
+	<link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+	<main>
+		<h1>Translation STR Generator</h1>
+		<p>Upload the English .str file:</p>
+		<input type="file" id="englishFileInput" accept=".str">
+		<p>Upload a CSV file with translations:</p>
+		<input type="file" id="csvFileInput" accept=".csv">
+		<button onclick="generateAndDownloadZip()">Generate STR Files</button>
+		<div id="output"></div>
+	</main>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+
+	<script src='./js//CSVToStr.js'></script>
+</body>
+
+</html>

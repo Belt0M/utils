@@ -1,0 +1,43 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgb(25, 0, 36);
+	min-height: 100vh;
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+		'Lucida Sans', Arial, sans-serif;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	border-radius: 1rem;
+	background-color: #fff;
+	padding: 2rem;
+	width: 40%;
+	min-width: 30rem;
+	margin: 5rem 0;
+}
+
+button {
+	padding: 0.75rem 0;
+	border-radius: 0.5rem;
+	background-color: rgb(134, 28, 200);
+	font-weight: 600;
+	color: #fff;
+	border: none;
+}
+
+div#output {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	flex-direction: column;
+	gap: 0.5rem;
+}
