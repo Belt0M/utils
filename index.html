@@ -11,13 +11,26 @@
 
 <body>
 	<main>
-		<h1>Translation STR Generator</h1>
-		<p>Upload the English .str file:</p>
-		<input type="file" id="englishFileInput" accept=".str">
-		<p>Upload a CSV file with translations:</p>
-		<input type="file" id="csvFileInput" accept=".csv">
-		<button onclick="generateAndDownloadZip()">Generate STR Files</button>
-		<div id="output"></div>
+		<h1>Translation STR and LCONF Generator</h1>
+
+		<div>
+			<p>Upload the English .str file:</p>
+			<label for="englishFileInput">Choose a file...</label>
+			<input type="file" id="englishFileInput" accept=".str">
+		</div>
+		<div>
+			<p>Upload the base .lconf file:</p>
+			<label for="lconfFileInput">Choose a file...</label>
+			<input type="file" id="lconfFileInput" accept=".lconf">
+		</div>
+
+		<div>
+			<p>Upload a CSV file with translations:</p>
+			<label for="csvFileInput">Choose a file...</label>
+			<input type="file" id="csvFileInput" accept=".csv">
+		</div>
+
+		<button onclick="generateAndDownloadZip()">Generate ZIP Archive</button>
 	</main>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>

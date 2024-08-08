@@ -14,6 +14,41 @@ body {
 		'Lucida Sans', Arial, sans-serif;
 }
 
+main h1 {
+	font-size: 1.8rem;
+}
+
+main p {
+	font-size: 1rem;
+}
+
+main label {
+	border: 0.15rem solid #60049d;
+	width: 50%;
+	border-radius: 0.2rem;
+	padding: 0.5rem 0.7rem 0.55rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: 0.2s;
+	font-size: 0.75rem;
+	text-align: center;
+}
+
+main label:hover {
+	background-color: #60049d;
+	color: #fff;
+}
+
+main input {
+	display: none;
+}
+
+main > div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
 main {
 	display: flex;
 	flex-direction: column;
@@ -33,11 +68,11 @@ button {
 	font-weight: 600;
 	color: #fff;
 	border: none;
+	margin-top: 1rem;
+	transition: 0.2s;
+	cursor: pointer;
 }
 
-div#output {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	flex-direction: column;
-	gap: 0.5rem;
+button:hover {
+	filter: brightness(110%);
 }
