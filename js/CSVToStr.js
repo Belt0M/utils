@@ -206,7 +206,7 @@ async function generateAndDownloadZip() {
 			if (item.font_id) {
 				const baseFontName = item.font_id
 					.replace(/^FONTS_EN_/, '')
-					.replace(/_FNT$|_FONT$/, '')
+					.replace(/_FNT$/, '')
 					.toLowerCase()
 				const localizedFontName = `FONTS_${lang}_${baseFontName.toUpperCase()}_FNT`
 				item.font_id = localizedFontName
@@ -292,10 +292,10 @@ async function generateAndDownloadZip() {
 		if (lconfContentEn[key].font_id) {
 			const baseFontName = lconfContentEn[key].font_id
 				.replace(/^FONTS_EN_/, '')
-				.replace(/_FNT$|_FONT$/, '')
+				.replace(/_FNT$/, '')
 				.toLowerCase()
 
-			lconfContentEn[key].font_id = `FONTS_EN_${baseFontName.toUpperCase()}`
+			lconfContentEn[key].font_id = `FONTS_EN_${baseFontName.toUpperCase()}_FNT`
 
 			if (!fontLetters[baseFontName]) {
 				fontLetters[baseFontName] = {}
