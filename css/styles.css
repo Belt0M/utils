@@ -1,3 +1,7 @@
+:root {
+	--headerHeight: 3rem;
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -5,24 +9,90 @@
 }
 
 body {
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	background-color: rgb(25, 0, 36);
 	min-height: 100vh;
 	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
 		'Lucida Sans', Arial, sans-serif;
 }
 
-main h1 {
+header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: var(--headerHeight);
+	background-color: #1b1b1b;
+	color: #fff;
+	font-weight: 600;
+}
+
+header ul {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+header li {
+	position: relative;
+	list-style: none;
+	display: flex;
+	align-items: center;
+	padding: 0.8rem 1rem;
+	cursor: pointer;
+	transition: 0.2s all;
+}
+
+header li:not(.active):hover {
+	color: #cecece;
+}
+
+header li.active::after {
+	position: absolute;
+	content: '';
+	height: 0.1rem;
+	background-color: #fff;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	/* border-bottom: 0.1rem solid #fff; */
+}
+
+main {
+	height: calc(100vh - var(--headerHeight));
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.util {
+	display: none;
+	flex-direction: column;
+	gap: 1rem;
+	border-radius: 1rem;
+	background-color: #fff;
+	padding: 2rem;
+	width: 40%;
+	min-width: 30rem;
+}
+
+.util.active {
+	display: flex;
+}
+
+.util input[type='number']::-webkit-outer-spin-button,
+.util input[type='number']::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.util h1 {
 	font-size: 1.8rem;
 }
 
-main p {
+.util p {
 	font-size: 1rem;
 }
 
-main .file-container label {
+.util .file-container label {
 	border: 0.15rem solid #60049d;
 	width: 50%;
 	border-radius: 0.2rem;
@@ -34,42 +104,51 @@ main .file-container label {
 	text-align: center;
 }
 
-main .file-container label:hover {
+.util .file-container label:hover {
 	background-color: #60049d;
 	color: #fff;
 }
 
-main .file-container input[type="file"]{
+.util .file-container input[type='file'] {
 	display: none;
 }
 
-main input[type="checkbox"]{
+.util input[type='checkbox'] {
 	width: 1rem;
 }
 
-main .checkbox-container{
- display: flex;
- gap: 0.5rem;
- align-items: center;
- font-size: .8rem;
+.util .checkbox-container {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	font-size: 0.8rem;
 }
 
-main > .file-container {
+.util > .file-container {
 	display: flex;
 	flex-direction: column;
 	gap: 0.75rem;
 }
 
-main {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	border-radius: 1rem;
-	background-color: #fff;
-	padding: 2rem;
-	width: 40%;
-	min-width: 30rem;
-	margin: 5rem 0;
+.util select {
+	padding: 0.5rem 0.25rem;
+	width: 50%;
+	border: 0.1rem solid #878787;
+}
+
+.util select:focus {
+	border-color: #60049d;
+}
+
+.util input[type='number'] {
+	padding: 0.65rem 0.5rem 0.6rem;
+	border-radius: 0.25rem;
+	border: 0.1rem solid #878787;
+}
+
+.util input[type='number']:focus {
+	border-color: #60049d;
+	outline: none;
 }
 
 button {
