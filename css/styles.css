@@ -22,7 +22,7 @@ main p {
 	font-size: 1rem;
 }
 
-main label {
+main .file-container label {
 	border: 0.15rem solid #60049d;
 	width: 50%;
 	border-radius: 0.2rem;
@@ -34,16 +34,27 @@ main label {
 	text-align: center;
 }
 
-main label:hover {
+main .file-container label:hover {
 	background-color: #60049d;
 	color: #fff;
 }
 
-main input {
+main .file-container input[type="file"]{
 	display: none;
 }
 
-main > div {
+main input[type="checkbox"]{
+	width: 1rem;
+}
+
+main .checkbox-container{
+ display: flex;
+ gap: 0.5rem;
+ align-items: center;
+ font-size: .8rem;
+}
+
+main > .file-container {
 	display: flex;
 	flex-direction: column;
 	gap: 0.75rem;
