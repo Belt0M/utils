@@ -19,6 +19,9 @@ document
 	.addEventListener('click', handleFileAndClipboard)
 
 function handleFileUpload(event) {
+	fntData = null
+	fileName = null
+
 	const file = event.target.files[0]
 	const reader = new FileReader()
 
