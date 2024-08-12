@@ -163,6 +163,11 @@ button {
 	cursor: pointer;
 }
 
-button:hover {
+button:not(:disabled):hover {
 	filter: brightness(110%);
+}
+
+button:disabled {
+	cursor: not-allowed;
+	background-color: #878787;
 }

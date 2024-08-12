@@ -1,11 +1,21 @@
+const downloadFNTBtn = document.getElementById('downloadFNTBtn')
+const fntCheckbox = document.getElementById('generate-fnt-archive')
 let fntData = null
 let fileName = 'modified.fnt'
 
 document
 	.getElementById('fntFileInput')
 	.addEventListener('change', handleFileUpload)
+
+fntCheckbox.addEventListener('change', function () {
+	if (downloadFNTBtn) {
+		downloadFNTBtn.innerText = this.checked
+			? 'Download and Copy To Clipboard Modified FNT'
+			: 'Copy To Clipboard Modified FNT'
+	}
+})
 document
-	.getElementById('downloadBtn')
+	.getElementById('downloadFNTBtn')
 	.addEventListener('click', handleFileAndClipboard)
 
 function handleFileUpload(event) {
@@ -34,7 +44,6 @@ function handleFileAndClipboard() {
 		return
 	}
 
-	// Modify the FNT data
 	fntData = fntData.map(line => {
 		if (line.startsWith('char id=')) {
 			const regex = new RegExp(`${param}=(-?\\d+)`)
@@ -50,30 +59,55 @@ function handleFileAndClipboard() {
 		return line
 	})
 
-	// Create Blob and URL for download
+	const isGenerateFNTArchive = document.getElementById(
+		'generate-fnt-archive'
+	).checked
+
 	const blob = new Blob([fntData.join('\n')], {type: 'text/plain'})
-	const url = URL.createObjectURL(blob)
 
-	// Create temporary link to trigger download
-	const a = document.createElement('a')
-	a.href = url
-	a.download = fileName
-	document.body.appendChild(a)
-	a.click()
-	document.body.removeChild(a)
+	if (isGenerateFNTArchive) {
+		const url = URL.createObjectURL(blob)
 
-	// Copy content to clipboard
+		const a = document.createElement('a')
+		a.href = url
+		a.download = fileName
+		document.body.appendChild(a)
+		a.click()
+		document.body.removeChild(a)
+	}
+
 	blob.text().then(text => {
 		navigator.clipboard
 			.writeText(text)
 			.then(() => {
-				console.log('FNT content copied to clipboard')
+				downloadFNTBtn.setAttribute('disabled', true)
+
+				downloadFNTBtn.innerText = 'Copied'
+
+				setTimeout(() => {
+					downloadFNTBtn.removeAttribute('disabled')
+
+					downloadFNTBtn.innerText = fntCheckbox.checked
+						? 'Download and Copy To Clipboard Modified FNT'
+						: 'Copy To Clipboard Modified FNT'
+				}, 2000)
 			})
 			.catch(err => {
-				console.error('Failed to copy content to clipboard', err)
+				downloadFNTBtn.removeAttribute('disabled')
+
+				downloadFNTBtn.innerText = 'Copied'
+
+				setTimeout(() => {
+					downloadFNTBtn.setAttribute('disabled', false)
+
+					downloadFNTBtn.innerText = fntCheckbox.checked
+						? 'Download and Copy To Clipboard Modified FNT'
+						: 'Copy To Clipboard Modified FNT'
+				}, 2000)
 			})
 	})
 
-	// Clean up
-	URL.revokeObjectURL(url)
+	if (isGenerateFNTArchive) {
+		URL.revokeObjectURL(url)
+	}
 }
