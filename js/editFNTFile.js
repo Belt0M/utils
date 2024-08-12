@@ -1,5 +1,5 @@
 const downloadFNTBtn = document.getElementById('downloadFNTBtn')
-const fntCheckbox = document.getElementById('generate-fnt-archive')
+const fntCheckbox = document.getElementById('generate-fnt-file')
 let fntData = null
 let fileName = 'modified.fnt'
 
@@ -59,9 +59,8 @@ function handleFileAndClipboard() {
 		return line
 	})
 
-	const isGenerateFNTArchive = document.getElementById(
-		'generate-fnt-archive'
-	).checked
+	const isGenerateFNTArchive =
+		document.getElementById('generate-fnt-file').checked
 
 	const blob = new Blob([fntData.join('\n')], {type: 'text/plain'})
 
