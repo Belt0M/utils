@@ -12,7 +12,11 @@ function handleFileUpload(event) {
 	const file = event.target.files[0]
 	const reader = new FileReader()
 
+	const label = document.querySelector('label[for="fntFileInput"]')
+
 	fileName = file.name
+
+	label.innerText = fileName
 
 	reader.onload = function (e) {
 		fntData = e.target.result.split('\n')
