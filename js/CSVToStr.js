@@ -1,80 +1,77 @@
 let translations = {}
 let englishTranslations = {}
 let baseLconf = {}
+let isPlaymerStructure = {}
 
-document
-	.getElementById('englishFileInput')
-	.addEventListener('change', function (event) {
-		const label = document.querySelector('label[for="englishFileInput"]')
-		const file = event.target.files[0]
+document.getElementById('englishFileInput').addEventListener('change', function (event) {
+	const label = document.querySelector('label[for="englishFileInput"]')
+	const file = event.target.files[0]
 
-		if (file && label) {
-			label.innerText = file.name
+	if (file && label) {
+		label.innerText = file.name
 
-			const reader = new FileReader()
+		const reader = new FileReader()
 
-			reader.onload = function (e) {
-				englishTranslations = JSON.parse(e.target.result).keys
-			}
-			reader.readAsText(file)
+		reader.onload = function (e) {
+			englishTranslations = JSON.parse(e.target.result).keys
 		}
-	})
+		reader.readAsText(file)
+	}
+})
 
-document
-	.getElementById('csvFileInput')
-	.addEventListener('change', function (event) {
-		const label = document.querySelector('label[for="csvFileInput"]')
-		const file = event.target.files[0]
+document.getElementById('csvFileInput').addEventListener('change', function (event) {
+	const label = document.querySelector('label[for="csvFileInput"]')
+	const file = event.target.files[0]
 
-		if (file) {
-			label.innerText = file.name
+	if (file) {
+		label.innerText = file.name
 
-			const reader = new FileReader()
+		const reader = new FileReader()
 
-			reader.onload = function (e) {
-				const text = e.target.result
-				const lines = text.split('\r\n')
-				const headers = lines[0].split(',')
+		reader.onload = function (e) {
+			const text = e.target.result
+			const lines = text.split('\r\n')
+			const headers = lines[0].split(',')
 
-				for (let i = 1; i < headers.length; i++) {
-					translations[headers[i]] = {}
-				}
+			for (let i = 1; i < headers.length; i++) {
+				translations[headers[i]] = {}
+			}
 
-				for (let i = 1; i < lines.length; i++) {
-					if (lines[i].trim() === '') continue
+			for (let i = 1; i < lines.length; i++) {
+				if (lines[i].trim() === '') continue
 
-					const row = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
-					const key = row[0]
+				const row = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+				const key = row[0]
 
-					for (let j = 1; j < headers.length; j++) {
-						translations[headers[j]][key] = row[j]
-							.replace(/(^"|"$)/g, '')
-							.replace(/\\n/g, '\n')
-					}
+				for (let j = 1; j < headers.length; j++) {
+					translations[headers[j]][key] = row[j].replace(/(^"|"$)/g, '').replace(/\\n/g, '\n')
 				}
 			}
-
-			reader.readAsText(file)
 		}
-	})
 
-document
-	.getElementById('lconfFileInput')
-	.addEventListener('change', function (event) {
-		const label = document.querySelector('label[for="lconfFileInput"]')
-		const file = event.target.files[0]
+		reader.readAsText(file)
+	}
+})
 
-		if (file) {
-			label.innerText = file.name
+document.getElementById('lconfFileInput').addEventListener('change', function (event) {
+	const label = document.querySelector('label[for="lconfFileInput"]')
+	const file = event.target.files[0]
 
-			const reader = new FileReader()
+	if (file) {
+		label.innerText = file.name
 
-			reader.onload = function (e) {
-				baseLconf = JSON.parse(e.target.result)
-			}
-			reader.readAsText(file)
+		const reader = new FileReader()
+
+		reader.onload = function (e) {
+			baseLconf = JSON.parse(e.target.result)
 		}
-	})
+		reader.readAsText(file)
+	}
+})
+
+document.getElementById('structure-switch').addEventListener('change', event => {
+	isPlaymerStructure = !event.target.checked
+})
 
 function getUniqueCharacters(text) {
 	const uniqueChars = new Set()
@@ -106,11 +103,7 @@ function formatCharacters(charString) {
 		}
 	}
 
-	return lowerCase
-		.sort()
-		.concat(upperCase.sort(), nonLatin.sort(), ' ', digits.sort())
-		.join('')
-		.replace(/\s+/g, ' ')
+	return lowerCase.sort().concat(upperCase.sort(), nonLatin.sort(), ' ', digits.sort()).join('').replace(/\s+/g, ' ')
 }
 
 function mergeUniqueCharacters(existingText, newText) {
@@ -136,9 +129,8 @@ async function generateAndDownloadZip() {
 		return
 	}
 
-	const generateUsedLetters = document.getElementById(
-		'generate-used-letters'
-	).checked
+	const generateUsedLetters = document.getElementById('generate-used-letters').checked
+
 	const localeZip = new JSZip()
 	const stringsFolder = localeZip.folder('strings')
 	const labelsFolder = localeZip.folder('labels')
@@ -160,46 +152,7 @@ async function generateAndDownloadZip() {
 			strContent.keys[key] = translations[lang][key] || englishTranslations[key]
 		}
 
-		const jsonStr = JSON.stringify(strContent, null, 4)
-		const strLangFolder = stringsFolder.folder(lowerCaseLang)
-
-		strLangFolder.file('base.str', jsonStr)
-		strLangFolder.file(
-			'rules.str',
-			JSON.stringify({'01_t': 'Game Rules'}, null, 4)
-		)
-		strLangFolder.file(
-			'ui_base.str',
-			JSON.stringify(
-				{
-					meta: {
-						includes: [],
-					},
-					keys: {
-						BS_UI_: '',
-					},
-				},
-				null,
-				4
-			)
-		)
-
-		strLangFolder.file(
-			'ui_bg.str',
-			JSON.stringify(
-				{
-					meta: {
-						includes: [],
-					},
-					keys: {},
-				},
-				null,
-				4
-			)
-		)
-
 		const lconfContent = {}
-
 		for (const key in baseLconf) {
 			const item = {...baseLconf[key]}
 
@@ -221,10 +174,7 @@ async function generateAndDownloadZip() {
 					if (!fontLetters[baseFontName][lowerCaseLang]) {
 						fontLetters[baseFontName][lowerCaseLang] = usedChars
 					} else {
-						fontLetters[baseFontName][lowerCaseLang] = mergeUniqueCharacters(
-							fontLetters[baseFontName][lowerCaseLang],
-							usedChars
-						)
+						fontLetters[baseFontName][lowerCaseLang] = mergeUniqueCharacters(fontLetters[baseFontName][lowerCaseLang], usedChars)
 					}
 				}
 			}
@@ -232,15 +182,49 @@ async function generateAndDownloadZip() {
 			lconfContent[key] = item
 		}
 
-		const lconfLangFolder = labelsFolder.folder(lowerCaseLang)
+		if (!isPlaymerStructure) {
+			stringsFolder.file(`${lowerCaseLang}.str`, JSON.stringify(strContent, null, 4))
+			labelsFolder.file(`${lowerCaseLang}.lconf`, JSON.stringify(lconfContent, null, 4))
+		} else {
+			const strLangFolder = stringsFolder.folder(lowerCaseLang)
 
-		lconfLangFolder.file('base.lconf', JSON.stringify(lconfContent, null, 4))
-		lconfLangFolder.file('ui_base.lconf', '{}')
-		lconfLangFolder.file('ui_bg.lconf', '{}')
+			strLangFolder.file('base.str', JSON.stringify(strContent, null, 4))
+			strLangFolder.file('rules.str', JSON.stringify({'01_t': 'Game Rules'}, null, 4))
+			strLangFolder.file(
+				'ui_base.str',
+				JSON.stringify(
+					{
+						meta: {
+							includes: [],
+						},
+						keys: {
+							BS_UI_: '',
+						},
+					},
+					null,
+					4
+				)
+			)
+			strLangFolder.file(
+				'ui_bg.str',
+				JSON.stringify(
+					{
+						meta: {
+							includes: [],
+						},
+						keys: {},
+					},
+					null,
+					4
+				)
+			)
+
+			const lconfLangFolder = labelsFolder.folder(lowerCaseLang)
+			lconfLangFolder.file('base.lconf', JSON.stringify(lconfContent, null, 4))
+			lconfLangFolder.file('ui_base.lconf', '{}')
+			lconfLangFolder.file('ui_bg.lconf', '{}')
+		}
 	}
-
-	const strLangFolderEn = stringsFolder.folder('en')
-	const lconfLangFolderEn = labelsFolder.folder('en')
 
 	const strContentEn = {
 		meta: {
@@ -249,76 +233,61 @@ async function generateAndDownloadZip() {
 		keys: englishTranslations,
 	}
 
-	strLangFolderEn.file('base.str', JSON.stringify(strContentEn, null, 4))
-	strLangFolderEn.file(
-		'rules.str',
-		JSON.stringify({'01_t': 'Game Rules'}, null, 4)
-	)
-	strLangFolderEn.file(
-		'ui_base.str',
-		JSON.stringify(
-			{
-				meta: {
-					includes: [],
-				},
-				keys: {
-					BS_UI_: '',
-				},
-			},
-			null,
-			4
-		)
-	)
+	if (!isPlaymerStructure) {
+		stringsFolder.file('en.str', JSON.stringify(strContentEn, null, 4))
 
-	strLangFolderEn.file(
-		'ui_bg.str',
-		JSON.stringify(
-			{
-				meta: {
-					includes: [],
-				},
-				keys: {},
-			},
-			null,
-			4
-		)
-	)
+		const lconfContentEn = {}
 
-	const lconfContentEn = {}
-
-	for (const key in baseLconf) {
-		lconfContentEn[key] = baseLconf[key]
-
-		if (lconfContentEn[key].font_id) {
-			const baseFontName = lconfContentEn[key].font_id
-				.replace(/^FONTS_EN_/, '')
-				.replace(/_FNT$/, '')
-				.toLowerCase()
-
-			lconfContentEn[key].font_id = `FONTS_EN_${baseFontName.toUpperCase()}_FNT`
-
-			if (!fontLetters[baseFontName]) {
-				fontLetters[baseFontName] = {}
-			}
-
-			const usedChars = getUniqueCharacters(
-				strContentEn.keys[lconfContentEn[key].string_id]
-			)
-
-			if (!fontLetters[baseFontName]['en']) {
-				fontLetters[baseFontName]['en'] = usedChars
-			} else {
-				fontLetters[baseFontName]['en'] = mergeUniqueCharacters(
-					fontLetters[baseFontName]['en'],
-					usedChars
-				)
-			}
+		for (const key in baseLconf) {
+			lconfContentEn[key] = {...baseLconf[key]}
 		}
-	}
 
-	lconfLangFolderEn.file('base.lconf', JSON.stringify(lconfContentEn, null, 4))
-	lconfLangFolderEn.file('ui_base.lconf', '{}')
-	lconfLangFolderEn.file('ui_bg.lconf', '{}')
+		labelsFolder.file('en.lconf', JSON.stringify(lconfContentEn, null, 4))
+	} else {
+		const strLangFolderEn = stringsFolder.folder('en')
+		const lconfLangFolderEn = labelsFolder.folder('en')
+
+		strLangFolderEn.file('base.str', JSON.stringify(strContentEn, null, 4))
+		strLangFolderEn.file('rules.str', JSON.stringify({'01_t': 'Game Rules'}, null, 4))
+		strLangFolderEn.file(
+			'ui_base.str',
+			JSON.stringify(
+				{
+					meta: {
+						includes: [],
+					},
+					keys: {
+						BS_UI_: '',
+					},
+				},
+				null,
+				4
+			)
+		)
+		strLangFolderEn.file(
+			'ui_bg.str',
+			JSON.stringify(
+				{
+					meta: {
+						includes: [],
+					},
+					keys: {},
+				},
+				null,
+				4
+			)
+		)
+
+		const lconfContentEn = {}
+
+		for (const key in baseLconf) {
+			lconfContentEn[key] = {...baseLconf[key]}
+		}
+
+		lconfLangFolderEn.file('base.lconf', JSON.stringify(lconfContentEn, null, 4))
+		lconfLangFolderEn.file('ui_base.lconf', '{}')
+		lconfLangFolderEn.file('ui_bg.lconf', '{}')
+	}
 
 	const localeContent = await localeZip.generateAsync({type: 'blob'})
 	const localeLink = document.createElement('a')

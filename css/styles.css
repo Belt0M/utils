@@ -11,8 +11,7 @@
 body {
 	background-color: rgb(25, 0, 36);
 	min-height: 100vh;
-	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
-		'Lucida Sans', Arial, sans-serif;
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 header {
@@ -170,4 +169,77 @@ button:not(:disabled):hover {
 button:disabled {
 	cursor: not-allowed;
 	background-color: #878787;
+}
+
+.switch-toggle {
+	--width: 50%;
+	--height: 3rem;
+	--offset: 0.15rem;
+	--radius: 4px;
+	cursor: pointer;
+	position: relative;
+	width: var(--width);
+	height: var(--height);
+	padding: var(--offset);
+	background: rgb(183, 20, 61);
+	border-radius: var(--radius);
+	font-size: 16px;
+	font-weight: 500;
+	line-height: normal;
+	font-style: normal;
+}
+
+.switch-toggle input[type='checkbox'] {
+	cursor: pointer;
+	position: absolute;
+	inset: 0;
+	appearance: none;
+	z-index: 2;
+}
+
+.switch-toggle input[type='checkbox']:checked + label.switch-toggle-label:before {
+	translate: 100% 0;
+}
+
+.switch-toggle span {
+	color: #1b1b1b;
+}
+
+.switch-toggle input[type='checkbox']:checked + label span:nth-child(1) {
+	color: rgb(255, 255, 255);
+}
+
+.switch-toggle input[type='checkbox']:not(:checked) + label.switch-toggle-label span:nth-child(2) {
+	color: rgb(255, 255, 255);
+}
+
+.switch-toggle input[type='checkbox'] + label.switch-toggle-label {
+	position: absolute;
+	inset: var(--offset, 0);
+	padding: 10px 0;
+	display: block;
+	user-select: none;
+	pointer-events: none;
+	display: grid;
+	gap: 2px;
+	grid-auto-flow: column;
+	grid-auto-columns: 1fr;
+	place-items: center;
+}
+
+.switch-toggle input[type='checkbox'] + label.switch-toggle-label:before {
+	content: '';
+	position: absolute;
+	width: 50%;
+	inset: 0;
+	background: #ffffff;
+	border-radius: calc(var(--radius) - var(--offset));
+	box-shadow: 0px 10px 20px 0px rgba(16, 39, 68, 0.1);
+	translate: 0 0;
+	transition: translate 250ms cubic-bezier(0.93, 0.26, 0.07, 0.69);
+}
+
+.switch-toggle input[type='checkbox'] + label.switch-toggle-label span {
+	position: relative;
+	transition: 200ms linear;
 }
