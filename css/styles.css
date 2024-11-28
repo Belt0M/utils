@@ -206,11 +206,13 @@ button:disabled {
 }
 
 .switch-toggle input[type='checkbox']:checked + label span:nth-child(1) {
-	color: rgb(255, 255, 255);
+	color: rgb(236, 236, 236);
+	text-decoration-line: line-through;
 }
 
 .switch-toggle input[type='checkbox']:not(:checked) + label.switch-toggle-label span:nth-child(2) {
-	color: rgb(255, 255, 255);
+	color: rgb(236, 236, 236);
+	text-decoration-line: line-through;
 }
 
 .switch-toggle input[type='checkbox'] + label.switch-toggle-label {
